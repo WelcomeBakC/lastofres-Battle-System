@@ -5,6 +5,10 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
 
+
+/*
+ * Class for testing various features
+ */
 public class Hello {
 
 	public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package com.lastofres;
+package com.cafe24.lastofres;
 
 public class Application {
 
