@@ -1,6 +1,7 @@
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
@@ -17,14 +18,17 @@ public class Hello {
 		
 		MysqlDataSource thing = new MysqlDataSource();
 		
-		thing.setPassword("Sean0712");
-		thing.setUser("testadmin");
+		
+		
+		thing.setPassword("Lor2020!");
+		thing.setUser("lastofres");
 		thing.setUrl("jdbc:mysql://lastofres.cafe24.com");
 		Statement stmt = null;
 		ResultSet result = null;
 		try {
-			Connection conn = thing.getConnection();
-			stmt = conn.createStatement();
+			Connection thing2 = DriverManager.getConnection("jdbc:mysql://lastofres.cafe24.com", "testplayer", "Sean0712");
+			//Connection conn = thing.getConnection();
+			stmt = thing2.createStatement();
 			if (stmt.execute("SELECT * FROM lastofres.avo_character WHERE ch_id == 1;")) {
 				result = stmt.getResultSet();
 			}
