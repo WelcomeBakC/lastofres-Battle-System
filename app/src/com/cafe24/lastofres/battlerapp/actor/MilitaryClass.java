@@ -2,11 +2,17 @@ package com.cafe24.lastofres.battlerapp.actor;
 
 import com.cafe24.lastofres.battlerapp.Effect;
 
-public class Military implements School {
+public class MilitaryClass extends Player {
 
+	public MilitaryClass(int attack, int defence, int intelligence, int agility) {
+		super(attack, defence, intelligence, agility, new Skill[] {
+				getSkill1(),
+				getSkill2()
+		});
+	}
 	
 	private static Skill getSkill1() {
-		return new Skill("") {
+		return new Skill("test skill 1") {
 			
 			@Override
 			public Effect[] apply(Actor source, Actor target) {
@@ -15,7 +21,7 @@ public class Military implements School {
 			
 			@Override
 			public String createMessage(Actor source, Actor target) {
-				return "";
+				return source.getName() + " used " + getName() + " on " + target.getName() + ".";
 			}
 		};
 	}
@@ -24,22 +30,14 @@ public class Military implements School {
 		return null;
 	}
 
-	public static Effect[] doAttack(Actor source, Actor target) {
+	@Override
+	public Effect[] attack(Actor target) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public static Skill[] getSkills() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public static Effect[] useSkill(int number, Actor target) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public static void receiveDamage(int damage) {
+	@Override
+	public void receiveDamage(int damage) {
 		// TODO Auto-generated method stub
 		
 	}

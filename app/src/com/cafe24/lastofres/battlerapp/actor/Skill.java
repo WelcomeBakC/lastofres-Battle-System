@@ -16,6 +16,8 @@ public abstract class Skill implements BiFunction<Actor, Actor, Effect[]> {
 		return new String(name);
 	}
 	
-	public abstract String createMessage(Actor source, Actor target);
+	public String createMessage(Actor source, Actor target) {
+		return source.getName() + " used " + getName() + " on " + target.getName() + ".";
+	}
 
 }
