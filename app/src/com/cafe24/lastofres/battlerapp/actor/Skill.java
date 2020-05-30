@@ -2,7 +2,7 @@ package com.cafe24.lastofres.battlerapp.actor;
 
 import java.util.function.BiFunction;
 
-import com.cafe24.lastofres.battlerapp.Effect;
+import com.cafe24.lastofres.battlerapp.effect.Effect;
 
 public abstract class Skill implements BiFunction<Actor, Actor, Effect[]> {
 

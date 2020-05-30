@@ -1,4 +1,4 @@
-package com.cafe24.lastofres.battlerapp;
+package com.cafe24.lastofres.battlerapp.effect;
 
 import java.util.function.BiConsumer;
 
@@ -8,22 +8,19 @@ public class Effect {
 
 	private final Actor source;
 	private Actor target;
+
+	private int duration;
 	
 	private final BiConsumer<Actor, Actor> effect;
 	
-	private int duration;
 	
-	public Effect(Actor source, Actor target, BiConsumer<Actor, Actor> effect, int duration) {
+	public Effect(Actor source, Actor target, int duration, BiConsumer<Actor, Actor> effect) {
 		this.source = source;
 		this.target = target;
-		this.effect = effect;
 		this.duration = duration;
+		this.effect = effect;
 	}
 	
-	
-	public void trigger() {
-		effect.accept(source, target);
-	}
 	
 	public int getDuration() {
 		return duration;
@@ -33,4 +30,11 @@ public class Effect {
 		this.duration = duration;
 	}
 	
+	public void trigger() {
+		effect.accept(source, target);
+	}
+	
+	public void end () {
+		;
+	}
 }
