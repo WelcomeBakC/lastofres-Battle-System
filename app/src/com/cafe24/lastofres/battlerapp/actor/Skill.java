@@ -1,5 +1,7 @@
 package com.cafe24.lastofres.battlerapp.actor;
 
+import java.util.function.Function;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.cafe24.lastofres.battlerapp.effect.TriggeredEffect;
@@ -18,13 +20,17 @@ public abstract class Skill {
 	public String getName() {
 		return new String(name);
 	}
-	
-	public String createMessage(Actor source, Actor target) {
-		return source.getName() + " used " + getName() + " on " + target.getName() + ".";
+
+	public CompositeFunction<Pair<Actor, Actor>, TriggeredEffect[]> getOnCast() {
+		return onCast;
 	}
 	
 	public TriggeredEffect[] cast(Actor source, Actor target) {
 		return onCast.apply(Pair.of(source, target));
+	}
+	
+	public String createMessage(Actor source, Actor target) {
+		return source.getName() + " used " + getName() + " on " + target.getName() + ".";
 	}
 
 }

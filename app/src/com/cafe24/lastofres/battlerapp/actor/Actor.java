@@ -17,7 +17,7 @@ public abstract class Actor {
 	protected Skill[] skills;
 	protected CompositeFunction<Integer, Integer> onReceiveDamage;
 	
-	private ArrayList<TriggeredEffect> effects;
+	private ArrayList<TriggeredEffect> effects = new ArrayList<TriggeredEffect>();
 	
 	
 	public Actor(String name, int health, int attack, int defence) {
@@ -50,9 +50,17 @@ public abstract class Actor {
 	public int getDefence() {
 		return defence;
 	}
+	
+	public Skill getBasicAttack() {
+		return basicAttack;
+	}
 
 	public Skill[] getSkills() {
 		return skills;
+	}
+	
+	public ArrayList<TriggeredEffect> getEffects() {
+		return effects;
 	}
 	
 	public TriggeredEffect[] useBasicAttack(Actor target) {

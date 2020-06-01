@@ -70,9 +70,13 @@ public class CompositeFunction<T, R> implements Function<T, R> {
 	
 	private Function<T, R> composeAll() {
 		Function<T, R> head = headQueue.peek().getFunction();
-		Function<R, R> tail = tailList.stream().reduce((f, g) -> f.andThen(g)).get();
-		
-		return head.andThen(tail);
+		if (tailList.isEmpty()) {
+			return head;
+		} else {
+			Function<R, R> tail = tailList.stream().reduce((f, g) -> f.andThen(g)).get();
+			
+			return head.andThen(tail);
+		}
 	}
 
 	@Override
