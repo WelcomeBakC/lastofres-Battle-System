@@ -1,6 +1,10 @@
 package com.cafe24.lastofres.battlerapp.actor;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.cafe24.lastofres.battlerapp.effect.TriggeredEffect;
+
+import util.CompositeFunction;
 
 public abstract class Player extends Actor {
 	
@@ -13,8 +17,39 @@ public abstract class Player extends Actor {
 		this.focus = 100;
 		this.intelligence = intelligence;
 		this.agility = agility;
-	}
+		
+		rest = new ActorAction("Rest") {
+			{
+				onCast = new CompositeFunction<Pair<Actor, Actor>, TriggeredEffect[]>(pair -> {
+					return new TriggeredEffect[] {
+							new TriggeredEffect("Resting", pair.getLeft(), pair.getRight(), 0) {
 
+								@Override
+								public void start() {
+									target.setHealth(getHealth() + 5);
+								}
+
+								@Override
+								public void trigger() {}
+
+								@Override
+								public void end() {}
+								
+							}
+					};
+				}, -1);
+			}
+		};
+	}
+	
+	@Override
+	public void setHealth(int health) {
+		if (health < 1) {
+			health = 1;
+		}
+		super.setHealth(health);
+	}
+	
 	public int getFocus() {
 		return focus;
 	}

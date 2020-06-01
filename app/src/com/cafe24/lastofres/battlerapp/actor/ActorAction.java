@@ -1,19 +1,17 @@
 package com.cafe24.lastofres.battlerapp.actor;
 
-import java.util.function.Function;
-
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.cafe24.lastofres.battlerapp.effect.TriggeredEffect;
 
 import util.CompositeFunction;
 
-public abstract class Skill {
+public abstract class ActorAction {
 
 	protected CompositeFunction<Pair<Actor, Actor>, TriggeredEffect[]> onCast;
 	private String name;
 	
-	public Skill(String name) {
+	public ActorAction(String name) {
 		this.name = new String(name);
 	}
 	

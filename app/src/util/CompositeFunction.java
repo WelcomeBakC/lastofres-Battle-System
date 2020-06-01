@@ -13,7 +13,7 @@ public class CompositeFunction<T, R> implements Function<T, R> {
 		
 		public Head(Function<U, S> function, int priority) {
 			this.function = function;
-			this.priority = priority;
+			this.priority = Math.floorMod(priority, Integer.MAX_VALUE);
 		}
 		
 		public Function<U, S> getFunction() {

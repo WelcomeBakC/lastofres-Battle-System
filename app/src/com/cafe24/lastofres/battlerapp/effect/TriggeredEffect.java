@@ -21,6 +21,7 @@ public abstract class TriggeredEffect{
 	
 	
 	public TriggeredEffect(String name, Actor source, Actor target, int duration) {
+		this.name = new String(name);
 		this.source = source;
 		this.target = target;
 		this.duration = duration;
@@ -47,7 +48,7 @@ public abstract class TriggeredEffect{
 		this.duration = duration;
 	}
 	
-	public CompositeFunction<Pair<Actor, Actor>, Integer> getOnInitial() {
+	public CompositeFunction<Pair<Actor, Actor>, Integer> getOnStart() {
 		return onStart;
 	}
 	

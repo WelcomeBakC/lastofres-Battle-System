@@ -9,20 +9,23 @@ import util.CompositeFunction;
 public abstract class Actor {
 
 	private String name;
+	private final int maxHealth;
 	private int health;
 	private final int attack;
 	private final int defence;
 	
-	protected Skill basicAttack;
-	protected Skill[] skills;
+	protected ActorAction basicAttack;
+	protected ActorAction[] skills;
+	protected ActorAction rest;
 	protected CompositeFunction<Integer, Integer> onReceiveDamage;
 	
-	private ArrayList<TriggeredEffect> effects = new ArrayList<TriggeredEffect>();
+	private ArrayList<TriggeredEffect> attachedEffects = new ArrayList<TriggeredEffect>();
 	
 	
-	public Actor(String name, int health, int attack, int defence) {
+	public Actor(String name, int maxHealth, int attack, int defence) {
 		setName(name);
-		this.health = health;
+		this.maxHealth = maxHealth;
+		this.health = maxHealth;
 		this.attack = attack;
 		this.defence = defence;
 	}
@@ -35,11 +38,21 @@ public abstract class Actor {
 		this.name = new String(name);
 	}
 	
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+	
 	public int getHealth() {
 		return health;
 	}
 	
 	public void setHealth(int health) {
+		if (health < 0) {
+			health = 0;
+		} else if (health > maxHealth) {
+			health = maxHealth;
+		}
+		
 		this.health = health;
 	}
 
@@ -51,34 +64,26 @@ public abstract class Actor {
 		return defence;
 	}
 	
-	public Skill getBasicAttack() {
+	public ActorAction getBasicAttack() {
 		return basicAttack;
 	}
 
-	public Skill[] getSkills() {
+	public ActorAction[] getSkills() {
 		return skills;
 	}
 	
-	public ArrayList<TriggeredEffect> getEffects() {
-		return effects;
-	}
-	
-	public TriggeredEffect[] useBasicAttack(Actor target) {
-		return basicAttack.cast(this, target);
-	}
-
-	public TriggeredEffect[] castSkill(int number, Actor target) {
-		return skills[number].cast(this, target);
+	public ArrayList<TriggeredEffect> getAttachedEffects() {
+		return attachedEffects;
 	}
 	
 	public void attachTriggeredEffect(TriggeredEffect effect) {
-		effects.add(effect);
+		attachedEffects.add(effect);
 		effect.start();
 	}
 	
 	public void detachTriggeredEffect(TriggeredEffect effect) {
 		effect.end();
-		effects.remove(effect);
+		attachedEffects.remove(effect);
 	}
 	
 	// TODO figure out how to implement damage reduction and defence ignore buff
