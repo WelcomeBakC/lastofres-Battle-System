@@ -1,4 +1,4 @@
-package com.cafe24.lastofres.battlerapp;
+package util;
 
 import java.util.Random;
 

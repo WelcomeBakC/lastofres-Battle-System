@@ -1,11 +1,14 @@
 package com.cafe24.lastofres.battlerapp.actor;
 
-import java.util.function.BiFunction;
+import org.apache.commons.lang3.tuple.Pair;
 
-import com.cafe24.lastofres.battlerapp.effect.Effect;
+import com.cafe24.lastofres.battlerapp.effect.TriggeredEffect;
 
-public abstract class Skill implements BiFunction<Actor, Actor, Effect[]> {
+import util.CompositeFunction;
 
+public abstract class Skill {
+
+	protected CompositeFunction<Pair<Actor, Actor>, TriggeredEffect[]> onCast;
 	private String name;
 	
 	public Skill(String name) {
@@ -18,6 +21,10 @@ public abstract class Skill implements BiFunction<Actor, Actor, Effect[]> {
 	
 	public String createMessage(Actor source, Actor target) {
 		return source.getName() + " used " + getName() + " on " + target.getName() + ".";
+	}
+	
+	public TriggeredEffect[] cast(Actor source, Actor target) {
+		return onCast.apply(Pair.of(source, target));
 	}
 
 }

@@ -1,27 +1,29 @@
 package com.cafe24.lastofres.battlerapp.actor;
 
-import com.cafe24.lastofres.battlerapp.Dice;
-import com.cafe24.lastofres.battlerapp.effect.Effect;
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.cafe24.lastofres.battlerapp.effect.TriggeredEffect;
+
+import util.CompositeFunction;
 
 public class InfantryClass extends Player {
 
 	public InfantryClass(String name, int health, int attack, int defence, int intelligence, int agility) {
-		super(name, health, attack, defence, intelligence, agility, new Skill[] {
+		super(name, health, attack, defence, intelligence, agility);
+		basicAttack = getBasicAttack();
+		skills = new Skill[] {
 				getSkill1(),
 				getSkill2()
-		});
+		};
 	}
 	
 	private static Skill getSkill1() {
-		return new Skill("buff attack") {
-			
-			@Override
-			public Effect[] apply(Actor source, Actor target) {
-				return new Effect[] {
-						new Effect(source, target, 2, (Actor src, Actor tgt) -> {
-							
-						})
-				};
+		return new Skill("Buff Attack") {
+			{
+				onCast = new CompositeFunction<Pair<Actor, Actor>, TriggeredEffect[]>(pair -> {
+					
+					return null;
+				}, -1);
 			}
 		};
 	}
@@ -30,15 +32,40 @@ public class InfantryClass extends Player {
 		return null;
 	}
 
-	@Override
-	public Effect[] attack(Actor target) {
-		// TODO Auto-generated method stub
-		return new Effect[] {
-				new Effect(this, target, 0, (Actor src, Actor tgt) -> {
-					int damage = Dice.roll(2, 150)
-							* src.getAttack() / 100;
-					tgt.receiveDamage(damage);
-				})
+	private static Skill getBasicAttack() {
+
+		return new Skill("Basic Attack") {
+			{
+				onCast = new CompositeFunction<Pair<Actor, Actor>, TriggeredEffect[]>(pair -> {
+					
+					return new TriggeredEffect[] {
+							new TriggeredEffect("Basic Attack", pair.getLeft(), pair.getRight(), 0) {
+								
+								{
+									onStart = new CompositeFunction<Pair<Actor, Actor>, Integer>(pair -> {
+										return Integer.valueOf(1);
+									}, -1);
+								}
+								
+								@Override
+								public void start() {
+									// calculate raw damage
+									int rawDamage = onStart.apply(pair);
+									// calculate damage after defence
+									int actualDamage = target.onReceiveDamage.apply(rawDamage);
+									target.receiveDamage(actualDamage);
+								}
+
+								@Override
+								public void trigger() {}
+
+								@Override
+								public void end() {}
+								
+							}
+					};
+				}, -1);
+			}
 		};
 	}
 
