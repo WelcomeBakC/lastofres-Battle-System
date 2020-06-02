@@ -3,16 +3,5 @@
   "maxHealth": 32000,
   "health": 32000,
   "attack": 100,
-  "defence": 300,
-  "onReceiveDamage": {
-    "headQueue": [
-      {
-        "function": {},
-        "priority": 2147483646
-      }
-    ],
-    "tailList": [],
-    "updated": true
-  },
-  "attachedEffects": []
+  "defence": 300
 }
