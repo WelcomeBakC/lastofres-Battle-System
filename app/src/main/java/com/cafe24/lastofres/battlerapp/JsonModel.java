@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import com.cafe24.lastofres.battlerapp.actor.CommandClass;
+import com.cafe24.lastofres.battlerapp.actor.DivinityClass;
 import com.cafe24.lastofres.battlerapp.actor.InfantryClass;
+import com.cafe24.lastofres.battlerapp.actor.MagicClass;
 import com.cafe24.lastofres.battlerapp.actor.Npc;
 import com.cafe24.lastofres.battlerapp.actor.Player;
 import com.google.gson.Gson;

@@ -1,13 +1,10 @@
-package com.cafe24.lastofres.battlerapp;
+package com.cafe24.lastofres.battlerapp.actor;
 
 import java.util.ArrayDeque;
 import java.util.function.Function;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.cafe24.lastofres.battlerapp.actor.Actor;
-import com.cafe24.lastofres.battlerapp.actor.ActorAction;
-import com.cafe24.lastofres.battlerapp.actor.Player;
 import com.cafe24.lastofres.battlerapp.effect.TriggeredEffect;
 
 import util.CompositeFunction;

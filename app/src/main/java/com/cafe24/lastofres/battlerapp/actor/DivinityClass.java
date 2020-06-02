@@ -1,12 +1,9 @@
-package com.cafe24.lastofres.battlerapp;
+package com.cafe24.lastofres.battlerapp.actor;
 
 import java.util.ArrayDeque;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.cafe24.lastofres.battlerapp.actor.Actor;
-import com.cafe24.lastofres.battlerapp.actor.ActorAction;
-import com.cafe24.lastofres.battlerapp.actor.Player;
 import com.cafe24.lastofres.battlerapp.effect.TriggeredEffect;
 
 import util.CompositeFunction;
@@ -148,7 +145,7 @@ public class DivinityClass extends Player {
 					{
 						onTrigger = new CompositeFunction<Pair<Actor, Actor>, Integer>(pair -> {
 							TriggeredEffect critical = target.getAttachedEffects().stream()
-									.filter(te -> "Critical Condition".equals(te))
+									.filter(te -> "Critical Condition".equals(te.getName()))
 									.findFirst().orElse(null);
 							
 							if (critical == null) {
