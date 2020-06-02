@@ -1,6 +1,6 @@
 package com.cafe24.lastofres.battlerapp.actor;
 
-import java.util.ArrayList;
+import java.util.ArrayDeque;
 
 import com.cafe24.lastofres.battlerapp.effect.TriggeredEffect;
 
@@ -11,15 +11,15 @@ public abstract class Actor {
 	private String name;
 	private final int maxHealth;
 	private int health;
-	private final int attack;
-	private final int defence;
+	private int attack;
+	private int defence;
 	
 	protected ActorAction basicAttack;
 	protected ActorAction[] skills;
 	protected ActorAction rest;
 	protected CompositeFunction<Integer, Integer> onReceiveDamage;
 	
-	private ArrayList<TriggeredEffect> attachedEffects = new ArrayList<TriggeredEffect>();
+	private ArrayDeque<TriggeredEffect> attachedEffects = new ArrayDeque<TriggeredEffect>();
 	
 	
 	public Actor(String name, int maxHealth, int attack, int defence) {
@@ -72,7 +72,11 @@ public abstract class Actor {
 		return skills;
 	}
 	
-	public ArrayList<TriggeredEffect> getAttachedEffects() {
+	public ActorAction getRest() {
+		return rest;
+	}
+	
+	public ArrayDeque<TriggeredEffect> getAttachedEffects() {
 		return attachedEffects;
 	}
 	
@@ -85,8 +89,15 @@ public abstract class Actor {
 		effect.end();
 		attachedEffects.remove(effect);
 	}
-	
-	// TODO figure out how to implement damage reduction and defence ignore buff
-	public abstract void receiveDamage(int damage);
-	
+
+	public int receiveDamage(int damage) {
+		damage = onReceiveDamage.apply(damage);
+		if (damage < 0) {
+			damage = 0;
+		}
+		setHealth(getHealth() - damage);
+		
+		System.out.println(damage + " Damage Received by " + getName());
+		return damage;
+	}
 }

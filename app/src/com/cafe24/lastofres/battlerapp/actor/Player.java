@@ -1,18 +1,21 @@
 package com.cafe24.lastofres.battlerapp.actor;
 
+import java.util.ArrayDeque;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.cafe24.lastofres.battlerapp.effect.TriggeredEffect;
 
 import util.CompositeFunction;
+import util.Dice;
 
 public abstract class Player extends Actor {
 	
 	private int focus;
-	private final int intelligence;
-	private final int agility;
+	private int intelligence;
+	private int agility;
 	
-	protected Player(String name, int health, int attack, int defence, int intelligence, int agility) {
+	public Player(String name, int health, int attack, int defence, int intelligence, int agility) {
 		super(name, health, attack, defence);
 		this.focus = 100;
 		this.intelligence = intelligence;
@@ -20,26 +23,37 @@ public abstract class Player extends Actor {
 		
 		rest = new ActorAction("Rest") {
 			{
-				onCast = new CompositeFunction<Pair<Actor, Actor>, TriggeredEffect[]>(pair -> {
-					return new TriggeredEffect[] {
-							new TriggeredEffect("Resting", pair.getLeft(), pair.getRight(), 0) {
+				onCast = new CompositeFunction<Pair<Actor, Actor>, ArrayDeque<TriggeredEffect>>(pair -> {
+					ArrayDeque<TriggeredEffect> effects = new ArrayDeque<TriggeredEffect>();
+					
+					effects.add(new TriggeredEffect("Resting", pair.getLeft(), pair.getRight(), 0) {
 
-								@Override
-								public void start() {
-									target.setHealth(getHealth() + 5);
-								}
+						@Override
+						public void start() {
+							target.setHealth(getHealth() + 5);
+						}
 
-								@Override
-								public void trigger() {}
+						@Override
+						public void trigger() {}
 
-								@Override
-								public void end() {}
-								
-							}
-					};
+						@Override
+						public void end() {}
+						
+					});
+					
+					return effects;
 				}, -1);
 			}
 		};
+		
+		onReceiveDamage = new CompositeFunction<Integer, Integer>(rawDamage -> {
+			if (Dice.roll(1, 100) <= this.getAgility() / 2) {
+				System.out.println("Attack evaded");
+				return 0;
+			} else {
+				return rawDamage - (Dice.roll(1, 10) + Dice.roll(2, this.getDefence() / 10));				
+			}			
+		}, -1);
 	}
 	
 	@Override
@@ -55,6 +69,12 @@ public abstract class Player extends Actor {
 	}
 
 	public void setFocus(int focus) {
+		if (focus < 0) {
+			focus = 0;
+		} else if (focus > 100) {
+			focus = 100;
+		}
+		
 		this.focus = focus;
 	}
 
@@ -66,13 +86,11 @@ public abstract class Player extends Actor {
 		return agility;
 	}
 	
-	public TriggeredEffect[] rest() {
+	public ArrayDeque<TriggeredEffect> rest() {
 		return null;
 	}
 	
 	public int getTurnPriority() {
 		return agility;
 	}
-	
-	
 }

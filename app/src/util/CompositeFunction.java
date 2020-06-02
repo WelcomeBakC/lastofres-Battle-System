@@ -1,8 +1,10 @@
 package util;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class CompositeFunction<T, R> implements Function<T, R> {
 	
@@ -34,12 +36,16 @@ public class CompositeFunction<T, R> implements Function<T, R> {
 	
 	private Function<T, R> composedFunction;
 	
+	
 	// constructor for non-empty headQueue
 	public CompositeFunction(Function<T, R> head, int priority) {
 		addHead(head, priority);
 	}
 	
 	
+	public List<Function<T, R>> getHeadQueueAsList() {
+		return headQueue.stream().map(head -> head.getFunction()).collect(Collectors.toList());
+	}
 	
 	public Function<T, R> getComposedFunction() {
 		if (updated) {
