@@ -43,7 +43,7 @@ public class Game {
 		
 	}
 	
-	private <R> R ask(String query,  String[] optionNames, List<R> options, Scanner in, PrintStream out) {
+	private int ask(String query,  String[] optionNames, Scanner in, PrintStream out) {
 		out.println(query);
 		
 		for (int i = 0; i < optionNames.length; i++) {
@@ -55,7 +55,7 @@ public class Game {
 				String line = in.nextLine();
 				int input = Integer.valueOf(line);
 				if (input >= 0 && input < optionNames.length && optionNames[input] != null) {
-					return options.get(input);
+					return input;
 				} else {
 					out.println("Invalid Input");
 				}
@@ -86,16 +86,51 @@ public class Game {
 			}
 		}
 		
-		optionNames[5] = "Rest";
-		options.set(5, actor.getRest());
+		if (actor.getRest() != null) {
+			optionNames[5] = "Rest";
+			options.set(5, actor.getRest());
+		}
 		
-		String query = "Choose Action";
+		optionNames[6] = "Check Status of an Actor";
 		
-		//Scanner scanner = new Scanner(in);
-		ActorAction action = ask(query, optionNames, options, scanner, out);
-		//scanner.close();
-		
-		return action;
+		while (true) {
+			int result = ask("Choose an Action", optionNames, scanner, out);
+			
+			if (result == 6) {
+				String[] actorNames = new String[playerList.size() + 1];
+				List<Actor> actors = new ArrayList<Actor>(playerList);
+				actors.add(npc);
+				
+				for (int i = 0; i < actors.size(); i++) {
+					actorNames[i] = actors.get(i).getName();
+				}
+				
+				result = ask("Choose an Actor", actorNames, scanner, out);
+				Actor resultActor = actors.get(result);
+				
+				if (resultActor instanceof Player) {
+					out.println("(" + resultActor.getName() + ") Health: " + resultActor.getHealth()
+						+ "/" + resultActor.getMaxHealth()
+						+ ", Focus: " + ((Player) resultActor).getFocus() + "/100");
+				} else {
+					out.println("(" + resultActor.getName() + ") Health: " + resultActor.getHealth()
+					+ "/" + resultActor.getMaxHealth());
+				}
+				out.println("Statuses:");
+				
+				if (resultActor.getAttachedEffects().size() == 0) {
+					out.println("No Statuses\n");
+				} else {
+					for (TriggeredEffect te : resultActor.getAttachedEffects()) {
+						out.println(te.getName());
+					}
+					out.println("");
+				}
+				
+			} else {
+				return options.get(result);
+			}
+		}
 	}
 	
 	private Actor queryTarget(Actor actor) {
@@ -110,7 +145,8 @@ public class Game {
 		String query = "Choose target";
 		
 		//Scanner scanner = new Scanner(in);
-		Actor target = ask(query, optionNames, options, scanner, out);
+		int result = ask(query, optionNames, scanner, out);
+		Actor target = options.get(result);
 		//scanner.close();
 		
 		return target;
@@ -129,6 +165,7 @@ public class Game {
 		
 		// choose action and target
 		if (actor instanceof Player && actor.getHealth() == 1) {
+			System.out.println("In Critical Condition! Actions Unavailable");
 			return;
 		}
 		

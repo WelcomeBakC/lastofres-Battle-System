@@ -58,9 +58,27 @@ public abstract class Player extends Actor {
 	
 	@Override
 	public void setHealth(int health) {
-		if (health < 1) {
+		if (health <= 1) {
 			health = 1;
+			
+			if (getAttachedEffects().stream().noneMatch(te -> "Critical Condition".equals(te.getName()))) {
+				attachTriggeredEffect(new TriggeredEffect("Critical Condition", this, this, -1) {
+
+					@Override
+					public void start() {
+						System.out.println(target.getName() + " Entered Critical Condition");
+					}
+
+					@Override
+					public void trigger() {}
+
+					@Override
+					public void end() {}
+					
+				});
+			}
 		}
+		
 		super.setHealth(health);
 	}
 	

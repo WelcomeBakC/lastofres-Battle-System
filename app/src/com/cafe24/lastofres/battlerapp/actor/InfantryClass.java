@@ -68,12 +68,12 @@ public class InfantryClass extends Player {
 	}
 	
 	private static ActorAction infantrySkill1() {
-		return new ActorAction("Buff Basic Attack") {
+		return new ActorAction("Improve Basic Attack") {
 			{
 				onCast = new CompositeFunction<Pair<Actor, Actor>, ArrayDeque<TriggeredEffect>>(pair -> {
 					ArrayDeque<TriggeredEffect> baseEffects = new ArrayDeque<TriggeredEffect>();
 					
-					baseEffects.add(new TriggeredEffect("Basic Attack Buff", pair.getLeft(), pair.getRight(), 2) {
+					baseEffects.add(new TriggeredEffect("Improved Basic Attack", pair.getLeft(), pair.getRight(), 2) {
 						
 						private Function<Pair<Actor, Actor>, Integer> buffedBasicAttack = pair -> {
 							return Dice.roll(2, 200);
@@ -110,7 +110,7 @@ public class InfantryClass extends Player {
 						}
 					});
 					
-					baseEffects.add(new TriggeredEffect("Basic Attack Buff Focus Cost", pair.getLeft(), pair.getLeft(), 0) {
+					baseEffects.add(new TriggeredEffect("Improved Basic Attack Focus Cost", pair.getLeft(), pair.getLeft(), 0) {
 						
 						{
 							onTrigger = new CompositeFunction<Pair<Actor, Actor>, Integer>(pair -> {
