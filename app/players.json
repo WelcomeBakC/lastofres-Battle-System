@@ -20,5 +20,27 @@
     "health": 80,
     "attack": 50,
     "defence": 50
+  },
+  {
+    "playerClass":"MagicClass",
+    "focus": 100,
+    "intelligence": 50,
+    "agility": 35,
+    "name": "dummy magic player",
+    "maxHealth": 80,
+    "health": 80,
+    "attack": 50,
+    "defence": 50
+  },
+  {
+    "playerClass":"DivinityClass",
+    "focus": 100,
+    "intelligence": 50,
+    "agility": 35,
+    "name": "dummy divinity player",
+    "maxHealth": 80,
+    "health": 80,
+    "attack": 50,
+    "defence": 50
   }
 ]

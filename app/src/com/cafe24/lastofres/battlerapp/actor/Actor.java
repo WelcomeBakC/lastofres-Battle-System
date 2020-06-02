@@ -9,7 +9,7 @@ import util.CompositeFunction;
 public abstract class Actor {
 
 	private String name;
-	private final int maxHealth;
+	private int maxHealth;
 	private int health;
 	private int attack;
 	private int defence;
@@ -42,6 +42,10 @@ public abstract class Actor {
 		return maxHealth;
 	}
 	
+	public void setMaxHealth(int maxHealth) {
+		this.maxHealth = maxHealth;
+	}
+	
 	public int getHealth() {
 		return health;
 	}
@@ -60,8 +64,16 @@ public abstract class Actor {
 		return attack;
 	}
 
+	public void setAttack(int attack) {
+		this.attack = attack;
+	}
+
 	public int getDefence() {
 		return defence;
+	}
+
+	public void setDefence(int defence) {
+		this.defence = defence;
 	}
 	
 	public ActorAction getBasicAttack() {

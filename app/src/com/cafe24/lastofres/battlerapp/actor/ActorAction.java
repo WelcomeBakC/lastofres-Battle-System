@@ -11,6 +11,7 @@ import util.CompositeFunction;
 public abstract class ActorAction {
 
 	protected CompositeFunction<Pair<Actor, Actor>, ArrayDeque<TriggeredEffect>> onCast;
+	protected TriggeredEffect cost;
 	private String name;
 	
 	public ActorAction(String name) {
@@ -23,6 +24,14 @@ public abstract class ActorAction {
 
 	public CompositeFunction<Pair<Actor, Actor>, ArrayDeque<TriggeredEffect>> getOnCast() {
 		return onCast;
+	}
+	
+	public TriggeredEffect getCost() {
+		return cost;
+	}
+	
+	public boolean canCast(Actor actor) {
+		return true;
 	}
 	
 	public ArrayDeque<TriggeredEffect> cast(Actor source, Actor target) {

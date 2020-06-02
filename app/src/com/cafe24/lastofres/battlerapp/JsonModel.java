@@ -52,6 +52,10 @@ public class JsonModel {
 				return new InfantryClass(name, maxHealth, attack, defence, intelligence, agility);
 			case ("CommandClass"):
 				return new CommandClass(name, maxHealth, attack, defence, intelligence, agility);
+			case ("MagicClass"):
+				return new MagicClass(name, maxHealth, attack, defence, intelligence, agility);
+			case ("DivinityClass"):
+				return new DivinityClass(name, maxHealth, attack, defence, intelligence, agility);
 			default:
 				return null;
 			}

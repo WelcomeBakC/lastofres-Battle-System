@@ -1,37 +1,41 @@
-package com.cafe24.lastofres.battlerapp.actor;
+package com.cafe24.lastofres.battlerapp;
 
 import java.util.ArrayDeque;
 import java.util.function.Function;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.cafe24.lastofres.battlerapp.actor.Actor;
+import com.cafe24.lastofres.battlerapp.actor.ActorAction;
+import com.cafe24.lastofres.battlerapp.actor.Player;
 import com.cafe24.lastofres.battlerapp.effect.TriggeredEffect;
 
 import util.CompositeFunction;
 import util.Dice;
 
-public class InfantryClass extends Player {
+public class MagicClass extends Player {
 
-	public InfantryClass(String name, int health, int attack, int defence, int intelligence, int agility) {
+	public MagicClass(String name, int health, int attack, int defence, int intelligence, int agility) {
 		super(name, health, attack, defence, intelligence, agility);
-		
-		basicAttack = infantryBasicAttack();
+
+		basicAttack = magicBasicAttack();
 		skills = new ActorAction[] {
-				infantrySkill1(this),
-				infantrySkill2(this)
+				magicSkill1(this),
+				magicSkill2(this)
 		};
 	}
-
-	private static ActorAction infantryBasicAttack() {
-		return new ActorAction("Infantry Basic Attack") { {
+	
+	
+	private static ActorAction magicBasicAttack() {
+		return new ActorAction("Magic Basic Attack") { {
 			onCast = new CompositeFunction<Pair<Actor, Actor>, ArrayDeque<TriggeredEffect>>(pair -> {
 				ArrayDeque<TriggeredEffect> baseEffects = new ArrayDeque<TriggeredEffect>();
 				
-				baseEffects.add(new TriggeredEffect("Infantry Basic Attack", pair.getLeft(), pair.getRight(), 0) {
+				baseEffects.add(new TriggeredEffect("Magic Basic Attack", pair.getLeft(), pair.getRight(), 0) {
 							
 					{
 						onTrigger = new CompositeFunction<Pair<Actor, Actor>, Integer>(pair -> {
-							return Dice.roll(2, 150);
+							return Dice.roll(2, 200);
 						}, -1);
 						
 						onTrigger.addTailSegment(baseDamage -> {
@@ -64,10 +68,10 @@ public class InfantryClass extends Player {
 		} };
 	}
 	
-	private static ActorAction infantrySkill1(Actor owner) {
-		return new ActorAction("Improve Basic Attack") {
+	private static ActorAction magicSkill1(Actor owner) {
+		return new ActorAction("Double Attack") {
 			{
-				cost = new TriggeredEffect("Improved Basic Attack Focus Cost", owner, owner, 0) {
+				cost = new TriggeredEffect("Double Attack Focus Cost", owner, owner, 0) {
 					
 					{
 						onTrigger = new CompositeFunction<Pair<Actor, Actor>, Integer>(pair -> {
@@ -94,18 +98,14 @@ public class InfantryClass extends Player {
 				onCast = new CompositeFunction<Pair<Actor, Actor>, ArrayDeque<TriggeredEffect>>(pair -> {
 					ArrayDeque<TriggeredEffect> baseEffects = new ArrayDeque<TriggeredEffect>();
 					
-					baseEffects.add(new TriggeredEffect("Improved Basic Attack", pair.getLeft(), pair.getRight(), 2) {
-						
-						private Function<Pair<Actor, Actor>, Integer> buffedBasicAttack = pair -> {
-							return Dice.roll(2, 200);
-						};
+					baseEffects.add(new TriggeredEffect("Double Attack", pair.getLeft(), pair.getRight(), 1) {
 						
 						private Function<ArrayDeque<TriggeredEffect>, ArrayDeque<TriggeredEffect>> attachBuffOnCast = effects -> {
-							TriggeredEffect basicAttackEffect = effects.stream()
-									.filter(e -> e.getName().equals("Infantry Basic Attack"))
-									.findAny().get();
+							ArrayDeque<TriggeredEffect> bonusAttacks = new ArrayDeque<TriggeredEffect>();
+							effects.stream().filter(e -> e.getName().equals("Magic Basic Attack"))
+									.forEach(e -> bonusAttacks.add(e));
 							
-							basicAttackEffect.getOnTrigger().addHead(buffedBasicAttack, 0);
+							effects.addAll(bonusAttacks);
 							
 							return effects;
 						};
@@ -116,8 +116,8 @@ public class InfantryClass extends Player {
 								.getOnCast()
 								.addTailSegment(attachBuffOnCast);
 							
-							System.out.println("Attack Boosted on " + target.getName()
-									+ " for " + getDuration() + " Turns");
+							System.out.println("Double Attack on " + target.getName()
+									+ " for " + getDuration() + " Turn");
 						}
 	
 						@Override
@@ -146,14 +146,14 @@ public class InfantryClass extends Player {
 		};
 	}
 
-	private static ActorAction infantrySkill2(Actor owner) {
-		return new ActorAction("Invulnerability") {
+	private static ActorAction magicSkill2(Actor owner) {
+		return new ActorAction("Explosion") {
 			{
-				cost = new TriggeredEffect("Invulnerability Focus Cost", owner, owner, 0) {
+				cost = new TriggeredEffect("Explosion Focus Cost", owner, owner, 0) {
 					
 					{
 						onTrigger = new CompositeFunction<Pair<Actor, Actor>, Integer>(pair -> {
-							return 35;
+							return 50;
 						}, -1);
 					}
 	
@@ -176,29 +176,43 @@ public class InfantryClass extends Player {
 				onCast = new CompositeFunction<Pair<Actor, Actor>, ArrayDeque<TriggeredEffect>>(pair -> {
 					ArrayDeque<TriggeredEffect> baseEffects = new ArrayDeque<TriggeredEffect>();
 					
-					baseEffects.add(new TriggeredEffect("Invulnerability", pair.getLeft(), pair.getRight(), 2) {
-	
-						private Function<Integer, Integer> invulnerabilityBuff = actualDamage -> {
-							return 0;
-						};
+					TriggeredEffect explosionDamage = new TriggeredEffect("Explosion", pair.getLeft(), pair.getRight(), 0) {
 						
-						@Override
-						public void start() {
-							target.onReceiveDamage.addTailSegment(invulnerabilityBuff);
+						{
+							onTrigger = new CompositeFunction<Pair<Actor, Actor>, Integer>(pair -> {
+								return Dice.roll(2, 200);
+							}, -1);
 							
-							System.out.println(target.getName() + " Gained Invulnerability for "
-									+ getDuration() + " Turns");
-						}
-	
-						@Override
-						public void trigger() {}
-	
-						@Override
-						public void end() {
-							target.onReceiveDamage.removeTailSegment(invulnerabilityBuff);
+							onTrigger.addTailSegment(baseDamage -> {
+								double modifier = getSource().getAttack() / 100.0;
+								return (int) (baseDamage * modifier);
+							});
 						}
 						
-					});
+						@Override
+						public void start() {}
+			
+						@Override
+						public void trigger() {
+							// calculate raw damage
+							int rawDamage = onTrigger.apply(Pair.of(source, target));
+							
+							//int healthBefore = target.getHealth();
+							target.receiveDamage(rawDamage);
+							//int actualDamage = healthBefore - target.getHealth();
+							
+							//System.out.println(actualDamage + " Damage done to " + target.getName());
+						}
+			
+						@Override
+						public void end() {}
+						
+					};
+					
+					baseEffects.add(explosionDamage);
+					baseEffects.add(explosionDamage);
+					baseEffects.add(explosionDamage);
+					baseEffects.add(explosionDamage);
 					
 					baseEffects.add(cost);
 					

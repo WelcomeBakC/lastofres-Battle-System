@@ -10,14 +10,14 @@ import util.CompositeFunction;
 import util.Dice;
 
 public abstract class Player extends Actor {
-	
+
 	private int focus;
 	private int intelligence;
 	private int agility;
 	
 	public Player(String name, int health, int attack, int defence, int intelligence, int agility) {
 		super(name, health, attack, defence);
-		this.focus = 100;
+		this.focus = intelligence;
 		this.intelligence = intelligence;
 		this.agility = agility;
 		
@@ -89,8 +89,8 @@ public abstract class Player extends Actor {
 	public void setFocus(int focus) {
 		if (focus < 0) {
 			focus = 0;
-		} else if (focus > 100) {
-			focus = 100;
+		} else if (focus > getIntelligence()) {
+			focus = getIntelligence();
 		}
 		
 		this.focus = focus;
@@ -99,9 +99,17 @@ public abstract class Player extends Actor {
 	public int getIntelligence() {
 		return intelligence;
 	}
+	
+	public void setIntelligence(int intelligence) {
+		this.intelligence = intelligence;
+	}
 
 	public int getAgility() {
 		return agility;
+	}
+
+	public void setAgility(int agility) {
+		this.agility = agility;
 	}
 	
 	public ArrayDeque<TriggeredEffect> rest() {

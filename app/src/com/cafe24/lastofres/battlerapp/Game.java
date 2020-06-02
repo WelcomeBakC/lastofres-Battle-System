@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.cafe24.lastofres.battlerapp.actor.Actor;
 import com.cafe24.lastofres.battlerapp.actor.ActorAction;
 import com.cafe24.lastofres.battlerapp.actor.Npc;
@@ -81,7 +83,13 @@ public class Game {
 		ActorAction[] skills = actor.getSkills();
 		if (skills != null) {
 			for (int i = 0; i < skills.length; i++) {
-				optionNames[i + 1] = skills[i].getName();
+				if (skills[i].getCost() != null) {
+					optionNames[i + 1] = String.format("%s (%d)", skills[i].getName(),
+							skills[i].getCost().getOnTrigger().apply(Pair.of(actor, actor)));
+				} else {
+					optionNames[i + 1] = String.format("%s", skills[i].getName());
+				}
+				
 				options.set(i + 1, skills[i]);
 			}
 		}
@@ -109,12 +117,12 @@ public class Game {
 				Actor resultActor = actors.get(result);
 				
 				if (resultActor instanceof Player) {
-					out.println("(" + resultActor.getName() + ") Health: " + resultActor.getHealth()
-						+ "/" + resultActor.getMaxHealth()
-						+ ", Focus: " + ((Player) resultActor).getFocus() + "/100");
+					out.format("(%s) Health: %d/%d, Focus: %d/%d\n", resultActor.getName(), 
+							resultActor.getHealth(), resultActor.getMaxHealth(), 
+							((Player) resultActor).getFocus(), ((Player) resultActor).getIntelligence());
 				} else {
-					out.println("(" + resultActor.getName() + ") Health: " + resultActor.getHealth()
-					+ "/" + resultActor.getMaxHealth());
+					out.format("(%s) Health: %d/%d\n", resultActor.getName(),
+							resultActor.getHealth(), resultActor.getMaxHealth());
 				}
 				out.println("Statuses:");
 				
@@ -127,8 +135,11 @@ public class Game {
 					out.println("");
 				}
 				
-			} else {
+			} else if (options.get(result).canCast(actor)) {
+
 				return options.get(result);
+			} else {
+				System.out.println("Not Enough Focus");
 			}
 		}
 	}
@@ -155,8 +166,15 @@ public class Game {
 	private void executeTurn(Actor actor) {
 		turnNumber++;
 		roundTurnNumber++;
-		System.out.println("New Turn (" + actor.getName() + "): "
-				+ roundTurnNumber + " of " + turnNumber + " Total");
+		System.out.format("New Turn (%s): %d of %d Total\n", actor.getName(), roundTurnNumber, turnNumber);
+		if (actor instanceof Player) {
+			Player player = (Player) actor;
+			
+			System.out.format("Health: %d/%d, Focus: %d/%d\n", player.getHealth(), player.getMaxHealth(),
+					player.getFocus(), player.getIntelligence());;
+		} else {
+			System.out.format("Health: %d/%d\n", actor.getHealth(), actor.getMaxHealth());
+		}
 		// trigger effects and decrement duration
 		for (TriggeredEffect te : actor.getAttachedEffects()) {
 			te.trigger();
@@ -176,7 +194,7 @@ public class Game {
 		// cast action on target and attach returned effects
 		try {
 			for (TriggeredEffect te : action.cast(actor, turnTarget)) {
-				turnTarget.attachTriggeredEffect(te);
+				te.getTarget().attachTriggeredEffect(te);
 				effects.add(te);
 				te.trigger();
 			}
