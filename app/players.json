@@ -1,0 +1,24 @@
+[
+  {
+    "playerClass":"InfantryClass",
+    "focus": 100,
+    "intelligence": 50,
+    "agility": 55,
+    "name": "dummy infantry player",
+    "maxHealth": 80,
+    "health": 80,
+    "attack": 50,
+    "defence": 50
+  },
+  {
+    "playerClass":"CommandClass",
+    "focus": 100,
+    "intelligence": 50,
+    "agility": 35,
+    "name": "dummy command player",
+    "maxHealth": 80,
+    "health": 80,
+    "attack": 50,
+    "defence": 50
+  }
+]

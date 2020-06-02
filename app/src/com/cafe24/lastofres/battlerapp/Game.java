@@ -9,8 +9,6 @@ import java.util.Scanner;
 
 import com.cafe24.lastofres.battlerapp.actor.Actor;
 import com.cafe24.lastofres.battlerapp.actor.ActorAction;
-import com.cafe24.lastofres.battlerapp.actor.CommandClass;
-import com.cafe24.lastofres.battlerapp.actor.InfantryClass;
 import com.cafe24.lastofres.battlerapp.actor.Npc;
 import com.cafe24.lastofres.battlerapp.actor.Player;
 import com.cafe24.lastofres.battlerapp.effect.TriggeredEffect;
@@ -189,16 +187,50 @@ public class Game {
 	}
 	
 	public static void main(String[] args) {
-		ArrayList<Player> playerList = new ArrayList<Player>();
+		ArrayList<Player> playerList;
 		
-		Player testplayer1 = new InfantryClass("dummy infantry", 80, 50, 50, 50, 55);
+		/*Player testplayer1 = new InfantryClass("dummy infantry", 80, 50, 50, 50, 55);
 		Player testplayer2 = new CommandClass("dummy command", 80, 50, 50, 50, 35);
 		playerList.add(testplayer1);
 		playerList.add(testplayer2);
 		
 		Actor testnpc = new Npc("dummy npc", 32000, 100, 300);
+
+		/*Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		
-		Game thisgame = new Game(System.in, System.out, playerList,	testnpc);
+		try {
+			File f = new File("players.json");
+			FileReader reader = new FileReader(f);
+			
+			Player testplayer3 = playerList.get(0);
+
+			System.out.println(testplayer3.getName());
+			System.out.println(testplayer3.getHealth());
+			System.out.println(testplayer3.getClass().getName());
+			
+			reader.close();
+			
+			/*PrintWriter o = new PrintWriter(f);
+			
+			o.write(gson.toJson(testnpc, Npc.class));
+			o.flush();
+			o.close();*/
+			
+			
+			/*File f = new File("players.json");
+			PrintWriter o = new PrintWriter(f);
+			
+			o.write(gson.toJson(playerList, new TypeToken<ArrayList<Player>>(){}.getType()));
+			o.flush();
+			o.close();
+			
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}*/
+		playerList = JsonModel.getPlayerList();
+		Npc npc = JsonModel.getNpc();
+		
+		Game thisgame = new Game(System.in, System.out, playerList,	npc);
 		
 		thisgame.run();
 	}
