@@ -67,6 +67,6 @@ public abstract class TriggeredEffect{
 	public abstract void end();
 	
 	public String createMessage(Actor source, Actor target) {
-		return source.getName() + " used " + getName() + " on " + target.getName() + ".";
+		return source.getName() + " used " + getName() + " on " + target.getName();
 	}
 }

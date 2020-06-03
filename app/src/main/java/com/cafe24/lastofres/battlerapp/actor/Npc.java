@@ -17,8 +17,7 @@ public class Npc extends Actor {
 		
 		skills = new ActorAction[] {
 				npcSkill1(),
-				npcSkill2(),
-				npcSkill3()
+				npcSkill2()
 		};
 		
 		onReceiveDamage = new CompositeFunction<Integer, Integer>(rawDamage -> {
@@ -131,20 +130,6 @@ public class Npc extends Actor {
 						public void end() {}
 						
 					});
-					
-					return baseEffects;
-				}, -1);
-			}
-		};
-	}
-	
-	private static ActorAction npcSkill3() {
-		return new ActorAction("Copy Effects") {
-			{
-				onCast = new CompositeFunction<Pair<Actor, Actor>, ArrayDeque<TriggeredEffect>>(pair -> {
-					ArrayDeque<TriggeredEffect> baseEffects = new ArrayDeque<TriggeredEffect>();
-					
-					pair.getRight().getAttachedEffects().forEach(te -> baseEffects.add(te));
 					
 					return baseEffects;
 				}, -1);

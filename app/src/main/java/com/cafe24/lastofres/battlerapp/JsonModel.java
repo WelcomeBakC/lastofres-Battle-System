@@ -1,6 +1,7 @@
 package com.cafe24.lastofres.battlerapp;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -113,7 +114,8 @@ public class JsonModel {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 		try {
-			InputStreamReader reader = new InputStreamReader(JsonModel.class.getResourceAsStream("/players.json"));
+			InputStream stream = JsonModel.class.getResourceAsStream("/players.json");
+			InputStreamReader reader = new InputStreamReader(stream);
 
 			playerList = ((ArrayList<PlayerSkeleton>) gson.fromJson(reader, new TypeToken<ArrayList<PlayerSkeleton>>(){}.getType()))
 					.stream().map(skeleton -> skeleton.toPlayer())
@@ -136,7 +138,8 @@ public class JsonModel {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 		try {
-			InputStreamReader reader = new InputStreamReader(JsonModel.class.getResourceAsStream("/npc.json"));
+			InputStream stream = JsonModel.class.getResourceAsStream("/npc.json");
+			InputStreamReader reader = new InputStreamReader(stream);
 
 			npc = gson.fromJson(reader, NpcSkeleton.class).toNpc();
 			
