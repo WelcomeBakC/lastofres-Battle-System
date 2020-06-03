@@ -137,6 +137,30 @@ public class DivinityClass extends Player {
 	
 	private static ActorAction divinitySkill2(Actor owner) {
 		return new ActorAction("소생") { {
+			cost = new TriggeredEffect("Revive Focus Cost", owner, owner, 0) {
+				
+				{
+					onTrigger = new CompositeFunction<Pair<Actor, Actor>, Integer>(pair -> {
+						return 35;
+					}, -1);
+				}
+
+				@Override
+				public void start() {}
+
+				@Override
+				public void trigger() {
+					int cost = onTrigger.apply(Pair.of(source, target));
+					
+					Player targetPlayer = (Player) target;
+					
+					targetPlayer.setFocus(targetPlayer.getFocus() - cost);
+				}
+
+				@Override
+				public void end() {}
+			};
+			
 			onCast = new CompositeFunction<Pair<Actor, Actor>, ArrayDeque<TriggeredEffect>>(pair -> {
 				ArrayDeque<TriggeredEffect> baseEffects = new ArrayDeque<TriggeredEffect>();
 				
@@ -178,29 +202,7 @@ public class DivinityClass extends Player {
 					
 				});
 				
-				/*baseEffects.add(new TriggeredEffect("Revive Focus Cost", pair.getLeft(), pair.getLeft(), 0) {
-					
-					{
-						onTrigger = new CompositeFunction<Pair<Actor, Actor>, Integer>(pair -> {
-							return 5;
-						}, -1);
-					}
-
-					@Override
-					public void start() {}
-
-					@Override
-					public void trigger() {
-						int cost = onTrigger.apply(Pair.of(source, target));
-						
-						Player targetPlayer = (Player) target;
-						
-						targetPlayer.setFocus(targetPlayer.getFocus() - cost);
-					}
-
-					@Override
-					public void end() {}
-				});*/
+				baseEffects.add(cost);
 				
 				return baseEffects;
 			}, -1);

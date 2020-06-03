@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Random;
 import java.util.Scanner;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -145,7 +146,7 @@ public class Game {
 	}
 	
 	private Actor queryTarget(Actor actor) {
-		String[] optionNames = new String[playerList.size() + 1];
+		String[] optionNames = new String[playerList.size() + 2];
 		List<Actor> options = new ArrayList<Actor>(playerList);
 		options.add(npc);
 		
@@ -153,12 +154,19 @@ public class Game {
 			optionNames[i] = options.get(i).getName();
 		}
 		
+		optionNames[optionNames.length - 1] = "Random Player";
+		
 		String query = "Choose target";
 		
-		//Scanner scanner = new Scanner(in);
 		int result = ask(query, optionNames, scanner, out);
-		Actor target = options.get(result);
-		//scanner.close();
+		
+		Actor target;
+		
+		if (result == optionNames.length - 1) {
+			target = options.get(new Random().nextInt(optionNames.length - 1));
+		} else {
+			target = options.get(result);
+		}
 		
 		return target;
 	}

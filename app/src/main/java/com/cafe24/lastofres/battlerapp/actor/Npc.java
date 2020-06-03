@@ -15,13 +15,18 @@ public class Npc extends Actor {
 		
 		basicAttack = npcBasicAttack();
 		
+		skills = new ActorAction[] {
+				npcSkill1(),
+				npcSkill2(),
+				npcSkill3()
+		};
+		
 		onReceiveDamage = new CompositeFunction<Integer, Integer>(rawDamage -> {
 			return rawDamage - (getDefence() / 10);
 		}, -1);
 	}
 	
 	private static ActorAction npcBasicAttack() {
-
 		return new ActorAction("Npc Basic Attack") {
 			{
 				onCast = new CompositeFunction<Pair<Actor, Actor>, ArrayDeque<TriggeredEffect>>(pair -> {
@@ -52,6 +57,95 @@ public class Npc extends Actor {
 						public void end() {}
 						
 					});
+					return baseEffects;
+				}, -1);
+			}
+		};
+	}
+	
+	private static ActorAction npcSkill1() {
+		return new ActorAction("Npc Heavy Attack") {
+			{
+				onCast = new CompositeFunction<Pair<Actor, Actor>, ArrayDeque<TriggeredEffect>>(pair -> {
+					ArrayDeque<TriggeredEffect> baseEffects = new ArrayDeque<TriggeredEffect>();
+					
+					baseEffects.add(new TriggeredEffect("Npc Heavy Attack", pair.getLeft(), pair.getRight(), 0) {
+						
+						{
+							onTrigger = new CompositeFunction<Pair<Actor, Actor>, Integer>(pair -> {
+								return 110;
+							}, -1);
+						}
+						
+						@Override
+						public void start() {}
+
+						@Override
+						public void trigger() {
+							// calculate raw damage
+							int rawDamage = onTrigger.apply(Pair.of(source, target));
+							
+							//int healthBefore = target.getHealth();
+							target.receiveDamage(rawDamage);
+							//int actualDamage = target.getHealth() - healthBefore;
+						}
+
+						@Override
+						public void end() {}
+						
+					});
+					return baseEffects;
+				}, -1);
+			}
+		};
+	}
+	
+	private static ActorAction npcSkill2() {
+		return new ActorAction("Ignite") {
+			{
+				onCast = new CompositeFunction<Pair<Actor, Actor>, ArrayDeque<TriggeredEffect>>(pair -> {
+					ArrayDeque<TriggeredEffect> baseEffects = new ArrayDeque<TriggeredEffect>();
+					
+					baseEffects.add(new TriggeredEffect("Ignited", pair.getLeft(), pair.getRight(), 3) {
+						
+						{
+							onTrigger = new CompositeFunction<Pair<Actor, Actor>, Integer>(pair -> {
+								return 15;
+							}, -1);
+						}
+						
+						@Override
+						public void start() {}
+
+						@Override
+						public void trigger() {
+							// calculate raw damage
+							int rawDamage = onTrigger.apply(Pair.of(source, target));
+							
+							//int healthBefore = target.getHealth();
+							target.receiveDamage(rawDamage);
+							//int actualDamage = target.getHealth() - healthBefore;
+						}
+
+						@Override
+						public void end() {}
+						
+					});
+					
+					return baseEffects;
+				}, -1);
+			}
+		};
+	}
+	
+	private static ActorAction npcSkill3() {
+		return new ActorAction("Copy Effects") {
+			{
+				onCast = new CompositeFunction<Pair<Actor, Actor>, ArrayDeque<TriggeredEffect>>(pair -> {
+					ArrayDeque<TriggeredEffect> baseEffects = new ArrayDeque<TriggeredEffect>();
+					
+					pair.getRight().getAttachedEffects().forEach(te -> baseEffects.add(te));
+					
 					return baseEffects;
 				}, -1);
 			}
