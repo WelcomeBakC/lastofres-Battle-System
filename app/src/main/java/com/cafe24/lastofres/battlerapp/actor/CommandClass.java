@@ -14,8 +14,8 @@ import util.CompositeFunction;
 
 public class CommandClass extends Player {
 
-	public CommandClass(String name, int maxHealth, int health, int attack, int defence, int intelligence, int agility) {
-		super(name, maxHealth, health, attack, defence, intelligence, agility);
+	public CommandClass(String name, int maxHealth, int health, int attack, int defence, int focus, int intelligence, int agility) {
+		super(name, maxHealth, health, attack, defence, focus, intelligence, agility);
 
 		skills = new ActorAction[] {
 				commandSkill1(this),

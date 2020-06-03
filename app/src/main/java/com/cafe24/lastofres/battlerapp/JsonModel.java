@@ -51,13 +51,13 @@ public class JsonModel {
 		public Player toPlayer() {
 			switch (playerClass) {
 			case ("InfantryClass"):
-				return new InfantryClass(name, maxHealth, health, attack, defence, intelligence, agility);
+				return new InfantryClass(name, maxHealth, health, attack, defence, focus, intelligence, agility);
 			case ("CommandClass"):
-				return new CommandClass(name, maxHealth, health, attack, defence, intelligence, agility);
+				return new CommandClass(name, maxHealth, health, attack, defence, focus, intelligence, agility);
 			case ("MagicClass"):
-				return new MagicClass(name, maxHealth, health, attack, defence, intelligence, agility);
+				return new MagicClass(name, maxHealth, health, attack, defence, focus, intelligence, agility);
 			case ("DivinityClass"):
-				return new DivinityClass(name, maxHealth, health, attack, defence, intelligence, agility);
+				return new DivinityClass(name, maxHealth, health, attack, defence, focus, intelligence, agility);
 			default:
 				return null;
 			}

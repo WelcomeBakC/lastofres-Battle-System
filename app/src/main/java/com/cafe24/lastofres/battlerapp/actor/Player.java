@@ -15,9 +15,9 @@ public abstract class Player extends Actor {
 	private int intelligence;
 	private int agility;
 	
-	public Player(String name, int maxHealth, int health, int attack, int defence, int intelligence, int agility) {
+	public Player(String name, int maxHealth, int health, int attack, int defence, int focus, int intelligence, int agility) {
 		super(name, maxHealth, health, attack, defence);
-		this.focus = intelligence;
+		this.focus = focus;
 		this.intelligence = intelligence;
 		this.agility = agility;
 		
