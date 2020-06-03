@@ -22,10 +22,10 @@ public abstract class Actor {
 	private ArrayDeque<TriggeredEffect> attachedEffects = new ArrayDeque<TriggeredEffect>();
 	
 	
-	public Actor(String name, int maxHealth, int attack, int defence) {
+	public Actor(String name, int maxHealth, int health, int attack, int defence) {
 		setName(name);
 		this.maxHealth = maxHealth;
-		this.health = maxHealth;
+		this.health = health;
 		this.attack = attack;
 		this.defence = defence;
 	}

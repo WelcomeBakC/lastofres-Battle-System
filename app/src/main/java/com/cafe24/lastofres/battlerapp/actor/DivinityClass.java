@@ -11,8 +11,8 @@ import util.Dice;
 
 public class DivinityClass extends Player {
 
-	public DivinityClass(String name, int health, int attack, int defence, int intelligence, int agility) {
-		super(name, health, attack, defence, intelligence, agility);
+	public DivinityClass(String name, int maxHealth, int health, int attack, int defence, int intelligence, int agility) {
+		super(name, maxHealth, health, attack, defence, intelligence, agility);
 
 		basicAttack = divinityBasicAttack();
 		skills = new ActorAction[] {

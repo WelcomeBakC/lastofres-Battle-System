@@ -10,8 +10,8 @@ import util.CompositeFunction;
 
 public class Npc extends Actor {
 
-	public Npc(String name, int maxHealth, int attack, int defence) {
-		super(name, maxHealth, attack, defence);
+	public Npc(String name, int maxHealth, int health, int attack, int defence) {
+		super(name, maxHealth, health, attack, defence);
 		
 		basicAttack = npcBasicAttack();
 		

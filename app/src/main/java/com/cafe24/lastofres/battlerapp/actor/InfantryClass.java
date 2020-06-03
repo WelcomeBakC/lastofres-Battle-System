@@ -12,8 +12,8 @@ import util.Dice;
 
 public class InfantryClass extends Player {
 
-	public InfantryClass(String name, int health, int attack, int defence, int intelligence, int agility) {
-		super(name, health, attack, defence, intelligence, agility);
+	public InfantryClass(String name, int maxHealth, int health, int attack, int defence, int intelligence, int agility) {
+		super(name, maxHealth, health, attack, defence, intelligence, agility);
 		
 		basicAttack = infantryBasicAttack();
 		skills = new ActorAction[] {

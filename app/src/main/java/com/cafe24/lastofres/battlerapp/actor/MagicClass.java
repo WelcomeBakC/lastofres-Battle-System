@@ -12,8 +12,8 @@ import util.Dice;
 
 public class MagicClass extends Player {
 
-	public MagicClass(String name, int health, int attack, int defence, int intelligence, int agility) {
-		super(name, health, attack, defence, intelligence, agility);
+	public MagicClass(String name, int maxHealth, int health, int attack, int defence, int intelligence, int agility) {
+		super(name, maxHealth, health, attack, defence, intelligence, agility);
 
 		basicAttack = magicBasicAttack();
 		skills = new ActorAction[] {
