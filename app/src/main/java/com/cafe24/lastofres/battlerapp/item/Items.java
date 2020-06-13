@@ -211,7 +211,7 @@ public class Items {
 						@Override
 						public void trigger() {
 							int refocusAmount = onTrigger.apply(Pair.of(source, target));
-							int recoilAmount = refocusAmount / 10 * 3;
+							int recoilAmount = refocusAmount / 5 * 2;
 							
 							if (target instanceof Player) {
 								Player player = (Player) target;
