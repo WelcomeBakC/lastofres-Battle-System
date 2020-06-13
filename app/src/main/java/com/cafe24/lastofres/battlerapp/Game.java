@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -69,7 +71,7 @@ public class Game {
 	}
 	
 	private ActorAction queryAction(Actor actor) {
-		String[] optionNames = new String[7];
+		String[] optionNames = new String[8];
 		List<ActorAction> options = new ArrayList<ActorAction>();
 		
 		for (int i = 0; i < 6; i++) {
@@ -95,16 +97,29 @@ public class Game {
 			}
 		}
 		
+		optionNames[5] = "Use Item";
+		
+		/*
 		if (actor.getRest() != null) {
 			optionNames[5] = "Rest";
 			options.set(5, actor.getRest());
-		}
+		}*/
 		
 		optionNames[6] = "Check Status of an Actor";
+		optionNames[7] = "Skip";
 		
 		while (true) {
 			int result = ask("Choose an Action", optionNames, scanner, out);
 			
+			if (result == 5) {
+				String[] itemNames = Stream.of(actor.getItems())
+						.map(aa -> aa.getName())
+						.collect(Collectors.toList()).toArray(new String[0]);
+				
+				int item = ask("Choose an Item", itemNames, scanner, out);
+				
+				return actor.getItems()[item];
+			}
 			if (result == 6) {
 				String[] actorNames = new String[playerList.size() + 1];
 				List<Actor> actors = new ArrayList<Actor>(playerList);
@@ -135,6 +150,9 @@ public class Game {
 					}
 					out.println("");
 				}
+				
+			} else if (result == 7) {
+				return null;
 				
 			} else if (options.get(result).canCast(actor)) {
 
@@ -195,20 +213,27 @@ public class Game {
 			return;
 		}
 		
-		ActorAction action = queryAction(actor);		
-		Actor turnTarget = queryTarget(actor);
-
+		ActorAction action = queryAction(actor);
+		Actor turnTarget;
 		
-		// cast action on target and attach returned effects
-		try {
-			for (TriggeredEffect te : action.cast(actor, turnTarget)) {
-				te.getTarget().attachTriggeredEffect(te);
-				effects.add(te);
-				te.trigger();
+		if (action != null) {
+			if (action.getName().contains("Recover")) {
+				turnTarget = actor;
+			} else {
+				turnTarget = queryTarget(actor);
 			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			System.out.println("\n--- Error encountered, but don't worry too much ---");
+			
+			// cast action on target and attach returned effects
+			try {
+				for (TriggeredEffect te : action.cast(actor, turnTarget)) {
+					te.getTarget().attachTriggeredEffect(te);
+					effects.add(te);
+					te.trigger();
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				System.out.println("\n--- Error encountered, but don't worry too much ---");
+			}
 		}
 		
 		// end 0 duration effects
@@ -229,9 +254,9 @@ public class Game {
 		
 		Player nextPlayer;
 		while ((nextPlayer = roundOrder.poll()) != null) {
-			if (roundTurnNumber == playerList.size() / 2) {
+			/*if (roundTurnNumber == playerList.size() / 2) {
 				executeTurn(npc);
-			}
+			}*/
 			executeTurn(nextPlayer);
 		}
 		

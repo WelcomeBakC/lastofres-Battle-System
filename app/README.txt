@@ -1,4 +1,4 @@
-by Sean Park (seanp1225@hotmail.ca)
+by WelcomeBakC (Sean Park)
 
 Features
   - turn based game
@@ -6,6 +6,7 @@ Features
   - 4 different character classes/schools:
   	Infantry, Command, Magic, Divinity
   	(could not use Korean file names)
+  - command like items
 
 Missing Features/Known Bugs:
   - Korean:

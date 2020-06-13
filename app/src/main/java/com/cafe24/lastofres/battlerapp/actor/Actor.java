@@ -3,6 +3,7 @@ package com.cafe24.lastofres.battlerapp.actor;
 import java.util.ArrayDeque;
 
 import com.cafe24.lastofres.battlerapp.effect.TriggeredEffect;
+import com.cafe24.lastofres.battlerapp.item.Items;
 
 import util.CompositeFunction;
 
@@ -16,6 +17,7 @@ public abstract class Actor {
 	
 	protected ActorAction basicAttack;
 	protected ActorAction[] skills;
+	protected ActorAction[] items;
 	protected ActorAction rest;
 	protected CompositeFunction<Integer, Integer> onReceiveDamage;
 	
@@ -28,6 +30,14 @@ public abstract class Actor {
 		this.health = health;
 		this.attack = attack;
 		this.defence = defence;
+		
+		this.items = new ActorAction[] {
+			Items.getRecoverHealth1(),
+			Items.getRecoverHealth2(),
+			Items.getRecoverFocus1(),
+			Items.getRecoverFocus2(),
+			Items.getRecoverFocus3()
+		};
 	}
 	
 	public String getName() {
@@ -82,6 +92,10 @@ public abstract class Actor {
 
 	public ActorAction[] getSkills() {
 		return skills;
+	}
+	
+	public ActorAction[] getItems() {
+		return items;
 	}
 	
 	public ActorAction getRest() {

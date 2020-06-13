@@ -1,7 +1,7 @@
 [
   {
     "playerClass":"InfantryClass",
-    "focus": 100,
+    "focus": 50,
     "intelligence": 50,
     "agility": 55,
     "name": "dummy infantry player",
@@ -12,7 +12,7 @@
   },
   {
     "playerClass":"CommandClass",
-    "focus": 100,
+    "focus": 50,
     "intelligence": 50,
     "agility": 35,
     "name": "dummy command player",
@@ -23,7 +23,7 @@
   },
   {
     "playerClass":"MagicClass",
-    "focus": 100,
+    "focus": 50,
     "intelligence": 50,
     "agility": 35,
     "name": "dummy magic player",
@@ -34,7 +34,7 @@
   },
   {
     "playerClass":"DivinityClass",
-    "focus": 100,
+    "focus": 50,
     "intelligence": 50,
     "agility": 35,
     "name": "dummy divinity player",
