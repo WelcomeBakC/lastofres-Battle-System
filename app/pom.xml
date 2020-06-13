@@ -6,7 +6,7 @@
 	<groupId>lastofres-Battle-System-Host</groupId>
 	<artifactId>battlerapp</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.3</version>
+	<version>1.1.0</version>
 
 
 	<distributionManagement>
