@@ -1,5 +1,5 @@
 # lastofres-Battle-System
-Host application for facilitating battles in the rpg http://lastofres.cafe24.com.
+Application for facilitating battles in the rpg http://lastofres.cafe24.com.
 
 Add new players to the battle by editing player.json.
 Configure npc by editing npc.json.
